@@ -12,13 +12,17 @@ let saveUser = function (req, res){
   console.log(req.body);
   // eslint-disable-next-line no-undef
   let userObject = new User(req.body);
-  userObject.save().then(saveduser => {
-    res.send(saveduser);
+
+  userObject.setPassword(req.body.password).then(function (){
+    userObject.save().then(saveduser => {
+      res.send(saveduser);
   })
+
     .catch(error => {
       console.log(error);
       res.status(500).send({ errorMessage: 'There was an error' });
     });
+  });
 };
 let getAllUsers = function (req, res){
     User.find({}).then(users =>{

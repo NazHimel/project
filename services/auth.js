@@ -6,7 +6,7 @@ module.exports.authorize = function (app, passport, LocalStrategy) {
 };
 
 module.exports.isAuthenticated = function (req, res, next) {
-  if (res.cookie('loggedIn')) {
+  if (req.cookies.loggedIn) {
     next();
   } else {
     res.redirect('/users/login');
