@@ -7,6 +7,7 @@
 /* eslint-disable no-unused-vars */
 
 let User = require('../models/user.model').User;
+let TokenService = require('../services/TokenService');
 /* eslint-disable space-before-blocks */
 let saveUser = function (req, res){
   console.log(req.body);
@@ -64,10 +65,10 @@ let loginUser = function (req, res, next) {
   authenticate(req.body.username, req.body.password, function (error, success) {
     console.log(error, success);
     if(success){
-      res.cookie('loggedIn', true);
-      res.redirect('/sample/vue');
+      let token = TokenService.generateToken({user_id: success._id.toString()});
+      res.send({token: token});
     } else {
-      res.redirect('/users/login');
+      res.status(403).send({message: 'Unauthorized'});
     }
   });
 };
